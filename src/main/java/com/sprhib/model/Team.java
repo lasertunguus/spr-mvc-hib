@@ -1,8 +1,11 @@
 package com.sprhib.model;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -16,6 +19,9 @@ public class Team {
 	private String name;
 	
 	private Integer rating;
+	
+	@OneToMany(mappedBy = "team")	// which cascades?
+	private List<TeamMember> teamMembers;
 	
 	public Integer getId() {
 		return id;
@@ -34,6 +40,12 @@ public class Team {
 	}
 	public void setRating(Integer rating) {
 		this.rating = rating;
+	}
+	public List<TeamMember> getTeamMembers() {
+		return teamMembers;
+	}
+	public void setTeamMembers(List<TeamMember> teamMembers) {
+		this.teamMembers = teamMembers;
 	}
 
 }
