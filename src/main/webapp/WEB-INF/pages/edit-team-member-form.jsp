@@ -1,7 +1,11 @@
+<%@taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<%@taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -9,7 +13,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
 <link rel='stylesheet'
 	href='${pageContext.request.contextPath}/webjars/bootstrap/3.3.6/css/bootstrap.min.css'>
-<title>Home page</title>
+<title>Edit team member page</title>
 </head>
 <body>
 	<nav class="navbar navbar-default">
@@ -23,7 +27,7 @@
 		<div class="collapse navbar-collapse"
 			id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav">
-				<li class="active"><span class="sr-only">(current)</span></a></li>
+				<li class="active"> <span class="sr-only">(current)</span></a></li>
 				<li><a href="${pageContext.request.contextPath}/">Home</a></li>
 				<li class="dropdown"><a href="#" class="dropdown-toggle"
 					data-toggle="dropdown" role="button" aria-haspopup="true"
@@ -51,29 +55,55 @@
 						<li><a
 							href="${pageContext.request.contextPath}/team_member/list.html">List</a></li>
 					</ul></li>
-				<ul class="nav navbar-nav navbar-right">
-					<li class="dropdown"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" role="button" aria-expanded="false"><spring:message
-								code="label.language" text="Language (default)"/> <span class="caret"></span> </a>
-						<ul class="dropdown-menu" role="menu">
-							<li><a
-								href="${pageContext.request.contextPath}/index?locale=en">EN</a></li>
-							<li><a
-								href="${pageContext.request.contextPath}/index?locale=en_US">US</a></li>
-						</ul></li>
-				</ul>
 			</ul>
 
 		</div>
 		<!-- /.navbar-collapse -->
 	</div>
 	<!-- /.container-fluid --> </nav>
-	${message}
-	<br />
+	<h1>Edit team member page</h1>
+	<p>Here you can edit the existing team member.</p>
+	<p>${message}</p>
+	<form:form method="POST" commandName="teamMember"
+		action="${pageContext.request.contextPath}/team_member/edit/${team_member.id}.html">
+		<form:hidden path="id" />
+		<table>
+			<tbody>
+				<tr>
+					<td>First name:</td>
+					<td><form:input path="firstName" /></td>
+				</tr>
+				<tr>
+					<td>Last name:</td>
+					<td><form:input path="lastName" /></td>
+				</tr>
+				<tr>
+					<td>Position:</td>
+					<td><form:input path="position" /></td>
+				</tr>
+				<tr>
+					<td>Team:</td>
+					<td><select name="teamId" multiple="multiple">
+						<c:forEach items="${teamMember.teams}" var="team">
+							<option value="${team.id}" selected="true">${team.name}</option>
+						</c:forEach>
+						<c:forEach items="${teams}" var="team">
+							<option value="${team.id}">${team.name}</option>
+						</c:forEach>
+					</select></td>
+				</tr>
+				<tr>
+					<td><input type="submit" value="Edit" /></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</form:form>
 
+	<p>
+		<a href="${pageContext.request.contextPath}/index.html">Home page</a>
+	</p>
 </body>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
-<script type="text/javascript"
-	src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/webjars/jquery/2.2.4/jquery.min.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.sprhib.model.Team;
 
+
 @Repository
 public class TeamDAOImpl implements TeamDAO {
 	
@@ -27,8 +28,8 @@ public class TeamDAOImpl implements TeamDAO {
 		Team teamToUpdate = getTeam(team.getId());
 		teamToUpdate.setName(team.getName());
 		teamToUpdate.setRating(team.getRating());
+		teamToUpdate.setOrganization(team.getOrganization());
 		getCurrentSession().update(teamToUpdate);
-		
 	}
 
 	public Team getTeam(int id) {

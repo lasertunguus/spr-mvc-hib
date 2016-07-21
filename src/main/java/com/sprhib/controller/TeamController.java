@@ -8,9 +8,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sprhib.model.Organization;
 import com.sprhib.model.Team;
+import com.sprhib.service.OrganizationService;
 import com.sprhib.service.TeamService;
 
 @Controller
@@ -19,18 +22,25 @@ public class TeamController {
 	
 	@Autowired
 	private TeamService teamService;
+	@Autowired
+	private OrganizationService orgService;
 	
 	@RequestMapping(value="/add", method=RequestMethod.GET)
 	public ModelAndView addTeamPage() {
 		ModelAndView modelAndView = new ModelAndView("add-team-form");
 		modelAndView.addObject("team", new Team());
+		
+		modelAndView.addObject("organizations", orgService.getOrganizations());
+		
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/add", method=RequestMethod.POST)
-	public ModelAndView addingTeam(@ModelAttribute Team team) {
-		
+	public ModelAndView addingTeam(@ModelAttribute Team team, @RequestParam("orgId") Organization org) {
 		ModelAndView modelAndView = new ModelAndView("home");
+		
+		team.setOrganization(org);
+		
 		teamService.addTeam(team);
 		
 		String message = "Team was successfully added.";
@@ -53,15 +63,17 @@ public class TeamController {
 	public ModelAndView editTeamPage(@PathVariable Integer id) {
 		ModelAndView modelAndView = new ModelAndView("edit-team-form");
 		Team team = teamService.getTeam(id);
-		modelAndView.addObject("team",team);
+		modelAndView.addObject("team", team);
+		modelAndView.addObject("organizations", orgService.getOrganizations());
 		return modelAndView;
 	}
 	
 	@RequestMapping(value="/edit/{id}", method=RequestMethod.POST)
-	public ModelAndView edditingTeam(@ModelAttribute Team team, @PathVariable Integer id) {
+	public ModelAndView editingTeam(@ModelAttribute Team team, @RequestParam("orgId") Organization org) {
 		
 		ModelAndView modelAndView = new ModelAndView("home");
 		
+		team.setOrganization(org);
 		teamService.updateTeam(team);
 		
 		String message = "Team was successfully edited.";
